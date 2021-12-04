@@ -5,8 +5,8 @@
  * https://adventofcode.com/2021/day/3
  * 
  * Solution for input: 
- * Part 1: 
- * Part 2: 
+ * Part 1: 1131506
+ * Part 2: 7863147
  * 
  */
 
@@ -28,20 +28,14 @@ function part1() {
 
 function part2() {
     const frontSum = (arr) => arr.reduce((a,c) => a+Number(c[0]), 0);
-
-    const oxy = function(arr=input, str='') {
+    
+    const calc = function(mode=1, arr=input, str='') {
         if (arr.length == 1) return str+arr[0];
-        let val = frontSum(arr) >= (arr.length - frontSum(arr)) ? '1' : '0'
-        return oxy(arr.reduce((a,c)=>c[0] == val ? [...a, (c.slice(1))] : a,[]),str+val);
+        let val = mode ? (frontSum(arr) >= (arr.length - frontSum(arr)) ? '1' : '0') : frontSum(arr) < (arr.length - frontSum(arr)) ? '1' : '0'
+        return calc(mode, arr.reduce((a,c)=>c[0] == val ? [...a, (c.slice(1))] : a,[]),str+val);
     }
 
-    const co2 = function(arr=input, str='') {
-        if (arr.length == 1) return str+arr[0];
-        let val = frontSum(arr) < (arr.length - frontSum(arr)) ? '1' : '0'
-        return co2(arr.reduce((a,c)=>c[0] == val ? [...a, (c.slice(1))] : a,[]),str+val);
-    }
-
-    return parseInt(oxy(), 2) * parseInt(co2(), 2); 
+    return parseInt(calc(), 2) * parseInt(calc(0), 2); 
 }
 
 formatAnswer(part1(), part2());
